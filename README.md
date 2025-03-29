@@ -6,20 +6,23 @@ A concise reference for reverse engineering with IDA Pro.
 
 ## 📁 Navigation Shortcuts
 
-| Action                      | Shortcut       |
-|----------------------------|----------------|
-| **Strings window**         | `Shift + F12`  |
-| **Functions window**       | `Shift + F4`   |
-| **Imports window**         | `Alt + F7`     |
-| **Exports window**         | `Ctrl + E`     |
-| **Jump to entry point**    | `Ctrl + E`     |
-| **Rename label/function**  | `N`            |
-| **Add comment**            | `;`            |
-| **Hex/Text toggle**        | `H`            |
-| **Follow call/jump**       | `Enter`        |
-| **Go back**                | `Esc` / `Backspace` |
-| **Graph view**             | `Space`        |
-| **Hex view**               | `Tab`          |
+| Action                          | Shortcut       |
+|--------------------------------|----------------|
+| **Strings window**             | `Shift + F12`  |
+| **Functions window**           | `Shift + F4`   |
+| **Imports window**             | `Alt + F7`     |
+| **Exports window**             | `Ctrl + E`     |
+| **Jump to entry point**        | `Ctrl + E`     |
+| **Jump to main() via list**    | `Shift + F4` → type `main` |
+| **Set bookmark**               | `Alt + M`      |
+| **Go to bookmark**             | `Ctrl + M`     |
+| **Rename label/function**      | `N`            |
+| **Add comment**                | `;`            |
+| **Hex/Text toggle**            | `H`            |
+| **Follow call/jump**           | `Enter`        |
+| **Go back**                    | `Esc` / `Backspace` |
+| **Graph view**                 | `Space`        |
+| **Hex view**                   | `Tab`          |
 
 ---
 
