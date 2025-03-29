@@ -23,7 +23,7 @@ A concise reference for reverse engineering with IDA Pro.
 
 ---
 
-## 🧭 Control Flow Arrow Colors
+## 🧽 Control Flow Arrow Colors
 
 | Color      | Meaning                         | Instruction Types                            | Condition          |
 |------------|----------------------------------|-----------------------------------------------|--------------------|
@@ -81,7 +81,81 @@ A concise reference for reverse engineering with IDA Pro.
 ```asm
 loc_401000:
   cmp eax, 5
-  jge loc_401020    ; 🟢 jump if done
+  jge loc_401020    ; 🧲 jump if done
   inc eax
   jmp loc_401000    ; 🔴 unconditional loop
 loc_401020:
+```
+
+### For Loop
+```asm
+loc_401000:
+  mov ecx, 0
+loc_401003:
+  cmp ecx, 10
+  jge loc_401010    ; 🧲 exit condition
+  ; loop body
+  inc ecx
+  jmp loc_401003    ; 🔴 loop back
+loc_401010:
+```
+
+### Do-While Loop
+```asm
+loc_401000:
+  ; loop body
+  inc eax
+  cmp eax, 5
+  jl loc_401000     ; 🧲 backward jump if still looping
+```
+
+---
+
+## 📊 Program Exit Paths
+
+| Path        | What It Does                                 | Clean?                  |
+|-------------|----------------------------------------------|--------------------------|
+| `exit()`    | Ends process immediately                     | ❌ Skips CRT cleanup     |
+| `_cexit()`  | Calls `atexit`, destructors, then returns    | ✅ Full CRT cleanup      |
+| `retn` only | Manual stack cleanup, no CRT exit used       | ⚠️ Depends on context    |
+
+---
+
+## 🧬 What Happens Before `main()`
+
+🔹 **Actual Entry Point ≠ `main()`**  
+The OS starts your program at a function like `start:` or `WinMainCRTStartup`.  
+This is **compiler-generated** setup code, not your own.
+
+🔹 **CRT Startup Routine Tasks**  
+Prepares the environment:
+- Exception handling (`SetUnhandledExceptionFilter`)
+- IO, heap, `stdin`/`stdout`
+- `argv`, `envp`
+- C++ global constructors
+
+➡️ Then it calls your actual `main()` function.
+
+---
+
+## 🔢 Registers Overview (x86_64)
+
+| Register  | Common Usage                           | Notes                                |
+|-----------|----------------------------------------|--------------------------------------|
+| `rax`     | Return value / accumulator             | Used for return from functions       |
+| `rbx`     | Base pointer (callee-saved)            | Often used to preserve values        |
+| `rcx`     | First integer argument (Windows x64)   | Also used in string operations       |
+| `rdx`     | Second argument                        | Common in API calls                  |
+| `rsi`     | Source index                           | Used in string/memory copy           |
+| `rdi`     | Destination index / first argument     | Important in Windows APIs            |
+| `rbp`     | Base pointer                           | Used to reference stack frames       |
+| `rsp`     | Stack pointer                          | Always tracks current stack location |
+| `r8`-`r9` | Additional function args                | Windows: 3rd and 4th param           |
+| `r10`-`r15`| General purpose                        | Compiler- or manually-used registers |
+
+### Notes:
+- Registers may be used **temporarily**, **for arguments**, or **saved across calls**.
+- Windows x64 calling convention uses: `rcx`, `rdx`, `r8`, `r9` for the first 4 arguments.
+- `rsp` must always be 16-byte aligned before a `call` instruction.
+- Callee-saved: `rbx`, `rbp`, `rsi`, `rdi`, `r12–r15`.
+- Caller-saved (volatile): `rax`, `rcx`, `rdx`, `r8–r11`.
