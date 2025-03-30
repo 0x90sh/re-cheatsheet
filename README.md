@@ -28,12 +28,12 @@ A concise reference for reverse engineering with IDA Pro.
 
 ## 🧽 Control Flow Arrow Colors
 
-| Color      | Meaning                         | Instruction Types                            | Condition          |
-|------------|----------------------------------|-----------------------------------------------|--------------------|
-| 🔴 Red     | Unconditional jump               | `jmp`, `call`, `retn`                         | Always taken       |
-| 🟢 Green   | Conditional true branch          | `je`, `jne`, `jg`, `jl`, `jz`, `jnz`, etc.    | If condition met   |
-| 🔵 Blue    | Conditional false branch (fall)  | Same as above                                 | If condition fails |
-| ⚫ Gray    | Linear/default flow               | Any normal instruction                        | Sequential flow    |
+| Color           | Meaning                                    | Instruction Types                                          | Condition / Flow                              |
+|-----------------|--------------------------------------------|------------------------------------------------------------|-----------------------------------------------|
+| 🟢 Green        | Conditional jump (true branch)             | `je`, `jne`, `jg`, `jl`, `ja`, `jb`, `jz`, `jnz`, etc.     | Branch taken if condition is satisfied        |
+| 🔴 Red          | Conditional jump (false branch)            | Same as above (the “not taken” path)                      | Branch taken if condition is **not** satisfied |
+| 🔵 Blue         | Unconditional jump                         | `jmp`, (sometimes `call` / `ret`, depends on IDA settings) | Always taken (direct transfer of execution)   |
+| ⚫ Gray / Black | Linear (default) flow / fall-through        | Any normal instruction (no jump)                          | Continues sequentially to the next instruction |
 
 ---
 
